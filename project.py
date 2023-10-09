@@ -1,5 +1,5 @@
 # Rewrite
-import requests, os, time
+import requests, os, time, typing
 from datetime import datetime
 
 
@@ -56,21 +56,39 @@ class City:
 
 
 def main():
-    ...
+    while True:
+        try:
+            area_name = getter("Please enter the area you want to search: ")
+            city_name = getter("Please enter the city you want to search: ")
+            v_area = area_validator(area_name)
+            print(v_area)
+            v_city = city_validator(v_area, city_name)
+            print(v_city)
+        except ValueError:
+            print("Invalid value!")
+            continue
 
 
-def area_validator(area_name):
-    c_area_name = area_name.capitalize()
-    if c_area_name not in City.cities.keys():
+def getter(prompt: str):
+    while True:
+        user_input = input(prompt).strip()
+        if user_input:
+            return user_input.lower().capitalize()
+        else:
+            print("Please enter a valid value.")
+
+
+def area_validator(area_name: str):
+    if area_name not in City.cities.keys():
         raise ValueError
-    return c_area_name
+    return area_name
 
 
-def city_validator(area_name, city_name):
-    c_city_name = city_name.capitalize()
-    if c_city_name not in City.cities[area_name].keys():
+# A bug right here
+def city_validator(area_name: str, city_name: str):
+    if city_name not in City.cities[area_name].keys():
         raise ValueError
-    return City.cities[area_name][c_city_name]
+    return City.cities[area_name][city_name]
 
 
 def get_data(city_name):
@@ -83,7 +101,9 @@ def get_data(city_name):
     end_time = the_record["endTime"].split(" ")[1].split(":")[0]
     pop = the_record["parameter"]["parameterName"]
 
-    return f"The pop for the {city_name} today, from {start_time} to {end_time} is {pop}%."
+    return (
+        f"The pop for the {city_name} today, from {start_time} to {end_time} is {pop}%."
+    )
 
 
 if __name__ == "__main__":
