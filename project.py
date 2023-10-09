@@ -56,17 +56,11 @@ class City:
 
 
 def main():
-    while True:
-        try:
-            area_name = getter("Please enter the area you want to search: ")
-            city_name = getter("Please enter the city you want to search: ")
-            v_area = area_validator(area_name)
-            print(v_area)
-            v_city = city_validator(v_area, city_name)
-            print(v_city)
-        except ValueError:
-            print("Invalid value!")
-            continue
+    area_name = getter("Please enter the area you want to search: ")
+    city_name = getter("Please enter the city you want to search: ")
+    v_area = area_validator(area_name)
+    v_city = city_validator(v_area, city_name)
+    print(v_city)
 
 
 def getter(prompt: str):
@@ -80,15 +74,16 @@ def getter(prompt: str):
 
 def area_validator(area_name: str):
     if area_name not in City.cities.keys():
-        raise ValueError
+        raise ValueError('area_name is not a key.')
     return area_name
 
 
 # A bug right here
 def city_validator(area_name: str, city_name: str):
-    if city_name not in City.cities[area_name].keys():
-        raise ValueError
-    return City.cities[area_name][city_name]
+    range = list(City.cities[area_name].keys())
+    if city_name not in range:
+        raise ValueError('city_name is not a key.')
+    return City.cities.get(area_name, )
 
 
 def get_data(city_name):

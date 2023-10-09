@@ -14,8 +14,7 @@ def test_area_lower_case(area_names):
     with pytest.raises(ValueError):
         assert area_validator(area_names)
 
-def test_city_validation():
-        assert city_validator('East', "Hualien County")
-        assert city_validator('East', "Taitung County")
-
-
+@pytest.mark.parametrize("city_names", ["Miaoli County", "Taichung City", "Changhua County", "Nantou County"])
+def test_city_validation(city_names):   
+    assert city_validator('West', city_names)
+    assert city_validator('West', city_names)
